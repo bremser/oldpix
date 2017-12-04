@@ -1,5 +1,5 @@
 // Description:
-//
+// Oldpix finds photographs from the Library of Congress
 //
 // Dependencies:
 //   None
@@ -8,35 +8,149 @@
 //   None
 //
 // Commands:
-//
+// oldpix find oakland
+// will search for photo with this subject in title / description
+// oldpix date 1932
+// finds photo to match date in date field of LoC json (also notes if date is outside range of Depression-era FSA collection)
+// oldpix famous
+// randomly selects one of four famous photographers from Depression-era archive and serves up a photo of theirs
+
+
 
 module.exports = function(robot) {
-  //  YOUR CODE HERE
-  //  Example
-  //  robot.hear(/javascript/i, function(msg) {
-  //    return msg.send("I love writing code!");
-  //  });
-}
 
-/************************************
+  const famousPhotographers = {
+    "photographers":[
+      {"name": "Dorothea Lange",
+       "search": "lange, dorothea"
+      },
+      {"name": "Russell Lee",
+       "search": "lee, russell"
+      },
+      {"name": "Walker Evans",
+       "search": "evans, walker"
+      },
+      {"name": "Marion Post Wolcott",
+      "search": "wolcott, marion post"
+      }
+    ]
+  };
 
-EXAMPLES OF THE KEY HUBOT FUNCTIONS
 
-************************************/
 
-/* Variables for random example */
+   robot.hear(/oldpix famous/i, function(msg) {
+    let rando = getRando(0,famousPhotographers.photographers.length);
+    let famousName =  famousPhotographers.photographers[rando].name;
+    let photoQuery = famousPhotographers.photographers[rando].search;
+    msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=contributor&q=' + photoQuery).get()(function(err, res, body) {
+      var image, images, response, photourl, title;
+      response = JSON.parse(body);
+      if (response.results !== undefined) {
+        let images = response.results;
+        let rando = getRando(0,19);
+        if (response.results[rando].title !== undefined) {
+          title = response.results[rando].title;
+        } else {title = "no title"};
 
-// const squirrels = ["http://img.skitch.com/20100714-d6q52xajfh4cimxr3888yb77ru.jpg", "https://img.skitch.com/20111026-r2wsngtu4jftwxmsytdke6arwd.png", "http://cl.ly/1i0s1r3t2s2G3P1N3t3M/Screen_Shot_2011-10-27_at_9.36.45_AM.png", "http://shipitsquirrel.github.com/images/squirrel.png"];
+        if (response.results[rando].created_published_date !== undefined) {
+          date = response.results[rando].created_published_date;
+        } else {date = "no date"};
 
-// module.exports = function(robot) {
-//   /* Basic example of respond / send. If the user enters hi or hello the bot responds "Howdy!" */
-//   return robot.respond(/hi|hello/i, function(msg) {
-//     return msg.send("Howdy!");
-//   });
+        if (response.results[rando].image.full !== undefined) {
+          photourl = response.results[rando].image.full;
+        } else {photourl = "no photo jpeg"};
 
-//   /* Random Example
-//   If a user enters 'ship it' we return a random squirrel, which is popular for symbolizing shipping something with engineers */
-//   return robot.hear(/ship it/i, function(msg) {
-//     return msg.send(msg.random(squirrels));
-//   });
-// };
+        if (images.length > 0) {
+        return msg.send( "http:" + photourl  + "\n Here's an old photo by a famous photographer named *" + famousName + "*   \n photo title: " + title  + "\n more info at - http:" + response.results[rando].links.item );
+      }
+      }  else { return msg.send( photoQuery  + "didn't turn anything up for some reason" );}
+    });
+  });
+
+
+
+
+     robot.respond(/oldpix date (.*)/i, function(msg) {
+      var photoQuery;
+        photoQuery = escape(msg.match[1]);
+        return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=date&q=' + photoQuery).get()(function(err, res, body) {
+          var image, images, photographer, response, date, photourl, title;
+          if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive hosted at LOC has years 1935-1944)")};
+          response = JSON.parse(body);
+          if (response.results !== undefined) {
+            let images = response.results;
+            let rando = getRando(0,19);
+            if (response.results[rando].title !== undefined) {
+              title = response.results[rando].title;
+            } else {title = "no title"};
+
+            if (response.results[rando].created_published_date !== undefined) {
+              date = response.results[rando].created_published_date;
+            } else {date = "no date"};
+
+            if (response.results[rando].image.full !== undefined) {
+              photourl = response.results[rando].image.full;
+            } else {photourl = "no photo jpeg"};
+
+            if (response.results[rando].creator !== undefined) {
+              photographer = response.results[rando].creator;
+            } else {photographer = "no photographer credit"};
+            if (images.length > 0) {
+            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
+          }
+          }  else { return msg.send( photoQuery  + "didn't turn anything up for some reason" );}
+        });
+      });
+
+
+       robot.respond(/oldpix find (.*)/i, function(msg) {
+            var photoQuery;
+              photoQuery = escape(msg.match[1]);
+              return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&q=' + photoQuery).get()(function(err, res, body) {
+                var image, images, photographer, response, date, photourl, title, hits;
+                response = JSON.parse(body);
+                if ( response.search.hits !== null || response.search.hits > 3 || response.results !== 'undefined' || response.results !== null) {
+                  images = response.results;
+                  let rando = getRando(0,19);
+                  if (response.results[rando].title !== 'undefined') {
+                    title = response.results[rando].title;
+                  } else {title = "no title"};
+
+                  if (response.results[rando].created_published_date !== "undefined") {
+                    date = response.results[rando].created_published_date;
+                  } else {date = "no date"};
+
+                  if (response.results[rando].image.full !== undefined) {
+                    photourl = response.results[rando].image.full;
+                  } else {photourl = "no photo jpeg "};
+
+                  if (response.results[rando].creator !== undefined) {
+                    photographer = response.results[rando].creator;
+                  } else {photographer = "no photographer credit"};
+                  if (images.length > 0) {
+                  return msg.send(  "http:" + photourl + "\n find: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
+                }
+              }  else { return msg.send( photoQuery  + "- too few results for this term! try again, please." );}
+              });
+            });
+
+    function getRando(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min;
+    };
+
+
+    function fixName (name) {
+      if (name === undefined || name === null) {
+        name = "no photographer credit"
+      } else {
+        comma = name.includes(",");
+        if (comma === true) {
+          return name = name.split(',').reverse().join(" ");
+        }
+        else {return name;}
+      }
+    };
+
+};
