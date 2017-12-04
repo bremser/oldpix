@@ -12,18 +12,21 @@ None, it's very basic.
 Oldpix gets random Library of Congress photos, based on several commands.
 
 oldpix find airplane
+
 will result in photo based on query term of title/subjects fields
 
 oldpix date 1936
+
 will result in a photo based on a query for the date field
 
 oldpix famous
+
 will result in one of several famous photographers (eg. Dorothea Lange) being selected at random and one of their photos is shown.
 
 ##### samples:
-⋅⋅* oldpix find pea pickers
-⋅⋅* oldpix date 1937
-⋅⋅* oldpix famous
+* oldpix find pea pickers
+* oldpix date 1937
+* oldpix famous
 
 ### Issues
 
