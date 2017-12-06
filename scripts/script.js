@@ -77,9 +77,10 @@ module.exports = function(robot) {
           var image, images, response, photographer, date, photourl, title;
           response = JSON.parse(body);
           if (response.search.hits > 2) {
+
             if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
             let images = response.results;
-            let rando = getRando(0,response.search.hits);
+            let rando = getRando(0, response.results.length);
             if (response.results[rando].title !== undefined) {
               title = response.results[rando].title;
             } else {title = "no title"};
@@ -98,7 +99,7 @@ module.exports = function(robot) {
             if (images.length > 0) {
             return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
           }
-        }  else { return msg.send("*" + photoQuery + "*" + " - didn't find anything with that date input" );}
+        }  else { return msg.send("*" + photoQuery + "*" + " - not enough results" );}
         });
       });
 
