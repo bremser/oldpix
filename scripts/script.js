@@ -81,19 +81,19 @@ module.exports = function(robot) {
             if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
             let images = response.results;
             let rando = getRando(0, response.results.length);
-            if (response.results[rando].title !== undefined) {
+            if (response.results[rando].title !== null) {
               title = response.results[rando].title;
             } else {title = "no title"};
 
-            if (response.results[rando].created_published_date !== undefined) {
+            if (response.results[rando].created_published_date !== null) {
               date = response.results[rando].created_published_date;
             } else {date = "no date"};
 
-            if (response.results[rando].image.full !== undefined) {
+            if (response.results[rando].image.full !== null) {
               photourl = response.results[rando].image.full;
             } else {photourl = "no photo jpeg"};
 
-            if (response.results[rando].creator !== undefined) {
+            if (response.results[rando].creator !== null) {
               photographer = response.results[rando].creator;
             } else {photographer = "no photographer credit"};
             if (images.length > 0) {
