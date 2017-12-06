@@ -74,10 +74,10 @@ module.exports = function(robot) {
       var photoQuery;
         photoQuery = escape(msg.match[1]);
         return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=date&q=' + photoQuery).get()(function(err, res, body) {
-          var image, images, photographer, response, date, photourl, title;
+          var image, images, photographer, date, photourl, title;
+          var response = [];
           if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
           response = JSON.parse(body);
-          if (typeof response.results === 'undefined') { let title = "no"; }
           if (response.results !== 'undefined') {
             let images = response.results;
             let rando = getRando(0,19);
