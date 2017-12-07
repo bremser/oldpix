@@ -101,7 +101,7 @@ module.exports = function(robot) {
               photographer = response.results[rando].creator;
             } else {photographer = "(no credit)"};
             if (images.length > 0) {
-            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item + pageTwo);
+            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
           }
         }  else { return msg.send("*" + photoQuery + "*" + " - no results, try again! (sample: oldpix date 1937)" );}
         });
