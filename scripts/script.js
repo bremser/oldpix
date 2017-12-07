@@ -77,11 +77,11 @@ module.exports = function(robot) {
           var image, images, response, photographer, date, photourl, title;
           response = JSON.parse(body);
           if (response.search.hits > 2) {
-            return msg.http('http:www.loc.gov/pictures/search/?fo=json&q=' + photoQuery + '&fi=date&sp=2&fa=displayed%3Aanywhere').get()(function(err, res, body) {
-
-            responseTwo = JSON.parse(body);
-              pageTwo = responseTwo.results.length;
-            };
+            // return msg.http('http:www.loc.gov/pictures/search/?fo=json&fi=date&sp=2&fa=displayed%3Aanywhere&q=' + photoQuery).get()(function(err, res, body) {
+            //
+            //   responseTwo = JSON.parse(body);
+            //   pageTwo = responseTwo.results.length;
+            // };
             if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
             let images = response.results;
             let rando = getRando(0, response.results.length);
