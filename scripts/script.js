@@ -77,11 +77,13 @@ module.exports = function(robot) {
           var image, images, response, photographer, date, photourl, title;
           response = JSON.parse(body);
           if (response.search.hits > 2) {
-            // return msg.http('http:www.loc.gov/pictures/search/?fo=json&fi=date&sp=2&fa=displayed%3Aanywhere&q=' + photoQuery).get()(function(err, res, body) {
-            //
-            //   responseTwo = JSON.parse(body);
-            //   pageTwo = responseTwo.results.length;
-            // };
+            msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=date&sp=2&q=' + photoQuery).get()(function(err, res, body) {
+            var responsePage2;
+            responsePage2 = JSON.parse(body);
+            let page2hits = responsePage2.results.length;
+            }
+
+          };
             if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
             let images = response.results;
             let rando = getRando(0, response.results.length);
@@ -101,7 +103,7 @@ module.exports = function(robot) {
               photographer = response.results[rando].creator;
             } else {photographer = "(no credit)"};
             if (images.length > 0) {
-            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
+            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item + page2hits);
           }
         }  else { return msg.send("*" + photoQuery + "*" + " - no results, try again! (sample: oldpix date 1937)" );}
         });
