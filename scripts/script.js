@@ -76,8 +76,8 @@ module.exports = function(robot) {
         return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=date&q=' + photoQuery).get()(function(err, res, body) {
           var image, images, response, photographer, date, photourl, title;
           response = JSON.parse(body);
-            if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")
-            };
+            if (response.search.hits > 2) {
+            if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)") };
             let images = response.results;
             let rando = getRando(0, response.results.length);
             if (response.results[rando].title !== null) {
