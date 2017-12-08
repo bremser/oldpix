@@ -26,6 +26,12 @@ module.exports = function(robot) {
           if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + " (note: the depression years archive at LOC covers 1935-1944)")};
           response = JSON.parse(body);
           if (response.search.hits > 2) {
+              return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&&sp=2fi=date&q=' + photoQuery).get()(function(err, res, body) {
+                  var response2, title2;
+                response2 = JSON.parse(body);
+                title2 = response2.results[0].title;
+
+                });
             let images = response.results;
             let rando = getRando(0,19);
             if (response.results[rando].title !== null) {
@@ -44,7 +50,7 @@ module.exports = function(robot) {
               photographer = response.results[rando].creator;
             } else {photographer = "no photographer credit"};
             if (images.length > 0) {
-            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item );
+            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery  + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item + title2);
           }
           }  else { return msg.send( photoQuery  + "didn't turn anything up for some reason" );}
         });
