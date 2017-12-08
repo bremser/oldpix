@@ -16,6 +16,8 @@
 // randomly selects one of four famous photographers from Depression-era archive and serves up a photo of theirs
 
 
+module.exports = function(robot) {
+
      robot.respond(/oldpix date (.*)/i, function(msg) {
       var photoQuery;
         photoQuery = escape(msg.match[1]);
@@ -80,8 +82,6 @@
               });
             });
 
-
-            module.exports = function(robot) {
 
               const famousPhotographers = {
                 "photographers":[
