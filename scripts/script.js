@@ -56,7 +56,8 @@ module.exports = function(robot) {
             if (images.length > 0) {
             return msg.send( "http:" + photourl + "\n find date: *" + photoQuery + fsaSuggest + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item);
           }
-        }  else { return msg.send( "\n  not much turned up for:" photoQuery  +  );}
+        }  else {
+          return msg.send( "\n  not much turned up for: " + photoQuery);}
         });
       });
 
