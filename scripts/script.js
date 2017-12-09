@@ -34,7 +34,7 @@ module.exports = function(robot) {
                 var response2, title2;
                 response2 = JSON.parse(body);
                 title2 = response2.results[0].title;
-                });
+
             let images = response.results;
             let rando = getRando(0,19);
             if (response.results[rando].title !== null) {
@@ -55,6 +55,7 @@ module.exports = function(robot) {
             if (images.length > 0) {
             return msg.send( 'http:' + photourl + '\n find date: *' + photoQuery + fsaSuggest + '* \n photo date: ' + date + '   \n photo title: ' + title + '\n by: ' + fixName(photographer) + '\n more info at - http:' + response.results[rando].links.item + title2);
           }
+            });
         }  else {
           return msg.send('\n  not much turned up for: ' + photoQuery);}
         });
