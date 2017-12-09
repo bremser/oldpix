@@ -26,16 +26,15 @@ module.exports = function(robot) {
           var image, images, photographer, response, date, fsaSuggest, photourl, title;
           if (photoQuery > 1944 || photoQuery < 1935) {
             let fsaSuggest = '\n (note: the depression years archive at LOC covers 1935-1944)';
-          } else { let fsaSuggest = '';
+          } else { let fsaSuggest = ' ';
           };
           response = JSON.parse(body);
           if (response.search.hits > 2) {
-              // return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&sp=2fi=date&q=' + photoQuery).get()(function(err, res, body) {
-              //     var response2, title2;
-              //   response2 = JSON.parse(body);
-              //   title2 = response2.results[0].title;
-              //
-              //   });
+              return msg.http('http://www.loc.gov/pictures/search/?fo=json&q=1820&fi=date&sp=2&fa=displayed%3Aanywhere').get()(function(err, res, body) {
+                var response2, title2;
+                response2 = JSON.parse(body);
+                title2 = response2.results[0].title;
+                });
             let images = response.results;
             let rando = getRando(0,19);
             if (response.results[rando].title !== null) {
