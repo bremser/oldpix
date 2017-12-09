@@ -25,8 +25,8 @@ module.exports = function(robot) {
         return msg.http(locURL + photoQuery).get()(function(err, res, body) {
           var image, images, photographer, response, date, fsaSuggest, photourl, title;
           if (photoQuery > 1944 || photoQuery < 1935) {
-            let fsaSuggest = "\n (note: the depression years archive at LOC covers 1935-1944)")
-          } else { let fsaSuggest = ''
+            let fsaSuggest = '\n (note: the depression years archive at LOC covers 1935-1944)';
+          } else { let fsaSuggest = '';
           };
           response = JSON.parse(body);
           if (response.search.hits > 2) {
@@ -40,24 +40,24 @@ module.exports = function(robot) {
             let rando = getRando(0,19);
             if (response.results[rando].title !== null) {
               title = response.results[rando].title;
-            } else {title = "no title"};
+            } else {title = 'no title'};
 
             if (response.results[rando].created_published_date !== null) {
               date = response.results[rando].created_published_date;
-            } else {date = "no date"};
+            } else {date = 'no date'};
 
             if (response.results[rando].image.full !== null) {
               photourl = response.results[rando].image.full;
-            } else {photourl = "no photo jpeg"};
+            } else {photourl = 'no photo jpeg'};
 
             if (response.results[rando].creator !== null) {
               photographer = response.results[rando].creator;
-            } else {photographer = "no photographer credit"};
+            } else {photographer = 'no photographer credit'};
             if (images.length > 0) {
-            return msg.send( "http:" + photourl + "\n find date: *" + photoQuery + fsaSuggest + "* \n photo date: " + date + "   \n photo title: " + title + "\n by: " + fixName(photographer) + "\n more info at - http:" + response.results[rando].links.item);
+            return msg.send( 'http:' + photourl + '\n find date: *' + photoQuery + fsaSuggest + '* \n photo date: ' + date + '   \n photo title: ' + title + '\n by: ' + fixName(photographer) + '\n more info at - http:' + response.results[rando].links.item);
           }
         }  else {
-          return msg.send( "\n  not much turned up for: " + photoQuery);}
+          return msg.send('\n  not much turned up for: ' + photoQuery);}
         });
       });
 
