@@ -27,12 +27,12 @@ module.exports = function(robot) {
           if (photoQuery > 1944 || photoQuery < 1935) { photoQuery = (photoQuery + "\n (note: the depression years archive at LOC covers 1935-1944)")};
           response = JSON.parse(body);
           if (response.search.hits > 2) {
-              return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&sp=2fi=date&q=' + photoQuery).get()(function(err, res, body) {
-                  var response2, title2;
-                response2 = JSON.parse(body);
-                title2 = response2.results[0].title;
-
-                });
+              // return msg.http('http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&sp=2fi=date&q=' + photoQuery).get()(function(err, res, body) {
+              //     var response2, title2;
+              //   response2 = JSON.parse(body);
+              //   title2 = response2.results[0].title;
+              //
+              //   });
             let images = response.results;
             let rando = getRando(0,19);
             if (response.results[rando].title !== null) {
