@@ -29,4 +29,4 @@ will result in one of several famous photographers (eg. Dorothea Lange) being se
 
 ### Considerations
 
-The LoC returns 20 results for each page of a query, the bot currently gets the first page of results, and a random second page (eg. page 5 with, results 100-120) and then chooses a random result from that group of 40. This is in an effort to make the results feel both relevant and random, especially if you repeatedly hit the same query. Related issue is photographs from the same roll of film or session are grouped together in the archive, which can fill up 10 or more slots in a page of results.  
+The LoC returns 20 results for each page of a query, the bot currently gets the first page of results, and a random second page (eg. page 5 with, results 100-120) and then chooses a random result from that group of 40. This is in an effort to make the results feel both relevant and random, especially if you repeatedly hit the same query. A related issue is that photographs from the same roll of film or session are grouped together in the archive, which can fill up 10 or more slots in a page of results.  
