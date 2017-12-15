@@ -16,7 +16,7 @@
 
 module.exports = function(robot) {
 
-  robot.respond(/oldpix date (.*)/i, function(msg) {
+  robot.respond(/date (.*)/i, function(msg) {
     var dateQuery;
     var locURL = 'http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&fi=date&q=';
     dateQuery = escape(msg.match[1]);
@@ -72,7 +72,7 @@ module.exports = function(robot) {
   });
 
 
-  robot.respond(/oldpix find (.*)/i, function(msg) {
+  robot.respond(/find (.*)/i, function(msg) {
     var photoQuery;
     var locURL = 'http://www.loc.gov/pictures/search/?fo=json&fa=displayed:anywhere&q=';
     photoQuery = escape(msg.match[1]);
